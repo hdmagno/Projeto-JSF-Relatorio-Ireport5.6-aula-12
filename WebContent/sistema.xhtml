@@ -7,24 +7,35 @@
 
 <h:head>
 </h:head>
-<body>
-	<p:panel header="Gravação">
-		<h:form id="form1">
+<h:body>
+
+	<p:panel header="Relatorio ...">
+		<h:form id="form1" target="_blank">
+			<p:commandButton value="Gerar Relatorio" action="#{mb.reportCliente}"
+				ajax="false">
+			</p:commandButton>
+		</h:form>
+	</p:panel>
+
+	<p:panel header="gravacao">
+		<h:form id="form2">
 			<p:panelGrid columns="2">
-				<h:outputText value="Nome" />
+				<h:outputText value="Nome"></h:outputText>
 				<p:inputText value="#{mb.cliente.nome}" />
-				<h:outputText value="Email" />
+				<h:outputText value="Email"></h:outputText>
 				<p:inputText value="#{mb.cliente.email}" />
 				<p:commandButton value="Gravar" action="#{mb.cadastrar}" ajax="true"
-					update=":form1,:form2"></p:commandButton>
+					update=":form2, :form3">
+				</p:commandButton>
 			</p:panelGrid>
+			<p:growl></p:growl>
 		</h:form>
-		<p:growl></p:growl>
 	</p:panel>
+
 	<p:panel header="Listagem">
-		<h:form id="form2">
+		<h:form id="form3">
 			<p:dataTable value="#{mb.clientes}" var="linha" rows="3"
-				paginator="rue">
+				paginator="true">
 				<p:column headerText="Id">
 					<h:outputText value="#{linha.id}" />
 				</p:column>
@@ -34,8 +45,54 @@
 				<p:column headerText="Email">
 					<h:outputText value="#{linha.email}" />
 				</p:column>
+
+				<p:column headerText="Excluir">
+					<p:commandButton value="excluir" action="#{mb.excluir}" ajax="true"
+						update=":form3">
+						<p:confirm header="Confirma Exclusao" message="Deseja Excluir ?" />
+						<f:setPropertyActionListener value="#{linha}"
+							target="#{mb.cliente}">
+						</f:setPropertyActionListener>
+					</p:commandButton>
+				</p:column>
+
+				<p:column headerText="Alterar">
+					<p:commandButton value="alterar" onclick="PF('ALTERA').show()"
+						ajax="true" update=":form4">
+						<f:setPropertyActionListener value="#{linha}"
+							target="#{mb.cliente}">
+						</f:setPropertyActionListener>
+					</p:commandButton>
+				</p:column>
 			</p:dataTable>
+			<p:growl></p:growl>
 		</h:form>
 	</p:panel>
-</body>
+
+	<p:confirmDialog global="true">
+		<p:commandButton value="Sim" type="button"
+			styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		<p:commandButton value="Não" type="button"
+			styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	</p:confirmDialog>
+
+	<p:dialog header="Alterar o Cliente" widgetVar="ALTERA" modal="true">
+		<p:panel header="alterar">
+			<h:form id="form4">
+				<h:inputHidden value="#{mb.cliente.id}"></h:inputHidden>
+				<p:panelGrid columns="2">
+					<h:outputText value="Nome" />
+					<p:inputText value="#{mb.cliente.nome}" />
+					<h:outputText value="Email" />
+					<p:inputText value="#{mb.cliente.email}" />
+					<p:commandButton value="Atualizar" action="#{mb.alterar}"
+						update=":form2, :form3, :form4" ajax="true"
+						onclick="PF('ALTERA').hide()">
+					</p:commandButton>
+				</p:panelGrid>
+			</h:form>
+		</p:panel>
+	</p:dialog>
+</h:body>
 </html>
+

@@ -22,6 +22,7 @@ public class ClienteDao {
 	
 	public void create(Cliente c)throws Exception {
 		manager = getEntityManager();
+		manager.clear();
 		manager.getTransaction().begin();
 		manager.persist(c);
 		manager.getTransaction().commit();
@@ -29,6 +30,7 @@ public class ClienteDao {
 
 	public void update(Cliente c)throws Exception {
 		manager = getEntityManager();
+		manager.clear();
 		manager.getTransaction().begin();
 		manager.merge(c);
 		manager.getTransaction().commit();
@@ -36,8 +38,10 @@ public class ClienteDao {
 	
 	public void delete(Cliente c)throws Exception {
 		manager = getEntityManager();
+		manager.clear();
 		manager.getTransaction().begin();
-		manager.remove(c);
+		Cliente cliente = manager.find(Cliente.class, c.getId());
+		manager.remove(cliente);
 		manager.getTransaction().commit();
 	}
 	
@@ -56,11 +60,13 @@ public class ClienteDao {
 	public static void main(String[] args) {
 		
 		try {
-			Cliente hilton = new Cliente(null, "Hilton", "hilton@gmail.com");
-			Cliente amanda = new Cliente(null, "Amanda", "amanda@gmail.com");
+//			Cliente hilton = new Cliente(null, "Hilton", "hilton@gmail.com");
+//			Cliente amanda = new Cliente(null, "Amanda", "amanda@gmail.com");
+			Cliente mel = new Cliente(3L, "Mel", "mel@gmail.com");
 			ClienteDao dao = new ClienteDao();
-			dao.create(hilton);
-			dao.create(amanda);
+			dao.delete(mel);
+//			dao.create(hilton);
+//			dao.create(amanda);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
