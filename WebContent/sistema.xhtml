@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<body>
+	<p:panel header="Gravação">
+		<h:form id="form1">
+			<p:panelGrid columns="2">
+				<h:outputText value="Nome" />
+				<p:inputText value="#{mb.cliente.nome}" />
+				<h:outputText value="Email" />
+				<p:inputText value="#{mb.cliente.email}" />
+				<p:commandButton value="Gravar" action="#{mb.cadastrar}" ajax="true"
+					update=":form1,:form2"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+		<p:growl></p:growl>
+	</p:panel>
+	<p:panel header="Listagem">
+		<h:form id="form2">
+			<p:dataTable value="#{mb.clientes}" var="linha" rows="3"
+				paginator="rue">
+				<p:column headerText="Id">
+					<h:outputText value="#{linha.id}" />
+				</p:column>
+				<p:column headerText="Nome">
+					<h:outputText value="#{linha.nome}" />
+				</p:column>
+				<p:column headerText="Email">
+					<h:outputText value="#{linha.email}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+</body>
+</html>
